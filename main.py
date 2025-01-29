@@ -57,6 +57,48 @@ def check_database_connection():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+@app.post("/login")
+def login(usuario: Usuario):
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+
+    # Buscar el usuario en la base de datos
+    cursor.execute("SELECT * FROM usuarios WHERE email = %s AND password = %s", 
+                   (usuario.email, usuario.password))
+    user = cursor.fetchone()
+
+    db.close()
+
+    if user:
+        # Si el usuario es encontrado, generamos un "token" ficticio o solo retornamos los datos del usuario
+        return {"message": "Login exitoso", "user": user}
+    else:
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+
+@app.get("/dashboard")
+def dashboard():
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    
+    # Obtener algunos datos relevantes para el dashboard
+    cursor.execute("SELECT COUNT(*) FROM depositos")
+    depositos_count = cursor.fetchone()
+
+    cursor.execute("SELECT COUNT(*) FROM clientes")
+    clientes_count = cursor.fetchone()
+
+    db.close()
+
+    return {
+        "depositos": depositos_count,
+        "clientes": clientes_count,
+    }
+
+@app.get("/home")
+def home():
+    return {"message": "Bienvenido al Home"}
+
+
 # Rutas para Depositos
 @app.get("/depositos")
 def get_depositos():

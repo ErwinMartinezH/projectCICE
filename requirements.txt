@@ -1,7 +1,2 @@
-fastapi
-uvicorn
-sqlalchemy
-pymysql
-pydantic
-python-jose[cryptography]
-passlib
+fastapi==0.100.0
+hypercorn==0.14.4

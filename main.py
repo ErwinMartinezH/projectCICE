@@ -51,7 +51,7 @@ def check_database_connection():
         return {
             "status": "success",
             "message": "Conexión a la base de datos exitosa",
-            "tables": [table[1] for table in tables]  # Solo el nombre de las tablas
+            "tables": [table[0] for table in tables]  # Solo el nombre de las tablas
         }
     except Exception as e:
         return {"status": "error", "message": str(e)}

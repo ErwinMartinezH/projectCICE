@@ -1,5 +1,2 @@
-fastapi
-uvicorn
-mysql-connector-python
-python-jose[cryptography]
-passlib
+fastapi==0.100.0
+hypercorn==0.14.4

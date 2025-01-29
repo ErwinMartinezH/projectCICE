@@ -32,6 +32,18 @@ def get_db_connection():
         port=os.getenv("MYSQL_ADDON_PORT")
     )
 
+@app.get("/check_db")
+def check_database_connection():
+    try:
+        db = get_db_connection()
+        cursor = db.cursor()
+        cursor.execute("SELECT 1")  # Consulta simple para verificar conexión
+        db.close()
+        return {"status": "success", "message": "Conexión a la base de datos exitosa"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 # Rutas para Depositos
 @app.get("/depositos")
 def get_depositos():

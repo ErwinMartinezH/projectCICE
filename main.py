@@ -37,11 +37,25 @@ def check_database_connection():
     try:
         db = get_db_connection()
         cursor = db.cursor()
-        cursor.execute("SELECT 1")  # Consulta simple para verificar conexión
+        
+        # Verificamos la conexión
+        cursor.execute("SELECT 1")  
+        
+        # Obtener las tablas de la base de datos
+        cursor.execute("SHOW TABLES")
+        tables = cursor.fetchall()
+        
         db.close()
-        return {"status": "success", "message": "Conexión a la base de datos exitosa"}
+        
+        # Devolver la información de la conexión y las tablas
+        return {
+            "status": "success",
+            "message": "Conexión a la base de datos exitosa",
+            "tables": [table[0] for table in tables]  # Solo el nombre de las tablas
+        }
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
 
 
 # Rutas para Depositos

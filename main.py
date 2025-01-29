@@ -1,7 +1,11 @@
 from fastapi import FastAPI
+from .routers import auth, depositos
 
 app = FastAPI()
 
+app.include_router(auth.router)
+app.include_router(depositos.router, prefix="/api")
+
 @app.get("/")
-async def root():
-    return {"greeting": "Hello, World!", "message": "Welcome to FastAPI!"}
+def read_root():
+    return {"message": "Bienvenido a la plataforma de depósitos masivos"}
